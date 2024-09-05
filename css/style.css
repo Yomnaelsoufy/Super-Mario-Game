@@ -55,3 +55,11 @@ body {
     border-radius: 5px;
     color: white;
 }
+.score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}

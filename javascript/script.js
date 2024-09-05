@@ -1,8 +1,10 @@
 const mario = document.querySelector('.mario');
 const obstacle = document.querySelector('.obstacle');
 const restartButton = document.querySelector('#restart-button');
+const scoreElement = document.querySelector('#score');
 let isJumping = false;
 let isGameOver = false;
+let score=0;
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' && !isJumping && !isGameOver) {
@@ -40,6 +42,8 @@ function moveObstacle() {
     const obstacleInterval = setInterval(() => {
         if (obstaclePosition <= 0) {
             obstaclePosition = 800;
+            score++; // Increment score when Mario successfully passes the obstacle
+            scoreElement.textContent = 'Score: ' + score;
         } else {
             obstaclePosition -= 10;
         }
@@ -61,6 +65,8 @@ function restartGame() {
     restartButton.style.display = 'none';
     obstacle.style.left = '800px'; 
     mario.style.bottom = '100px'; 
+    score = 0; // Reset the score when the game is restarted
+    scoreElement.textContent = 'Score: ' + score; // Reset the score display
     moveObstacle(); 
 }
 
