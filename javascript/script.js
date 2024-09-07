@@ -2,9 +2,18 @@ const mario = document.querySelector('.mario');
 const obstacle = document.querySelector('.obstacle');
 const restartButton = document.querySelector('#restart-button');
 const scoreElement = document.querySelector('#score');
+const startButton = document.getElementById('start-button');
+const startScreen = document.getElementById('start-screen');
+const gameContainer = document.getElementById('game-container');
 let isJumping = false;
 let isGameOver = false;
-let score=0;
+let score = 0;
+
+startButton.addEventListener('click', () => {
+    startScreen.style.display = 'none';  // Hide the start screen
+    gameContainer.style.display = 'block';  // Show the game
+    moveObstacle();  // Start the game
+});
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' && !isJumping && !isGameOver) {
@@ -50,7 +59,6 @@ function moveObstacle() {
         obstacle.style.left = obstaclePosition + 'px';
 
         // Collision detection
-       
         const marioPosition = parseInt(window.getComputedStyle(mario).getPropertyValue('bottom'));
         if (obstaclePosition > 0 && obstaclePosition < 100 && marioPosition < 150) {
             clearInterval(obstacleInterval);
@@ -70,6 +78,4 @@ function restartGame() {
     moveObstacle(); 
 }
 
-restartButton.addEventListener('click',restartGame);
-
-moveObstacle();
+restartButton.addEventListener('click', restartGame);
