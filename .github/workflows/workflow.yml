@@ -1,0 +1,49 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install Node.js (required for running linters)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Specify the Node.js version you need
+
+      # Install the necessary linters
+      - name: Install linters (htmlhint, stylelint, eslint)
+        run: |
+          npm install -g htmlhint stylelint eslint
+
+      # Run HTML linting
+      - name: Lint HTML files
+        run: |
+          htmlhint "**/*.html"
+
+      # Run CSS linting
+      - name: Lint CSS files
+        run: |
+          stylelint "**/*.css"
+
+      # Run JavaScript linting
+      - name: Lint JavaScript files
+        run: |
+          eslint "**/*.js"
+
+      # Optional: Fail the workflow if any linting errors are found
+      - name: Check for linting errors
+        if: failure() # Ensures that if any linting step fails, the build fails
+        run: echo "Linting errors found!"
