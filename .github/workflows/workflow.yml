@@ -17,9 +17,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Specify the Node.js version you need
+          node-version: '18'
 
-      # Install the necessary linters and stylelint-config-standard
+      # Install the necessary linters
       - name: Install linters (htmlhint, stylelint, eslint, stylelint-config-standard)
         run: |
           npm install -g htmlhint stylelint eslint stylelint-config-standard
@@ -39,16 +39,17 @@ jobs:
       # Create eslint config file for ESLint v9
       - name: Create eslint config
         run: |
-          echo 'export default [
-            {
-              files: ["**/*.js"],
-              rules: {
-                "quotes": ["error", "double"],
-                "semi": ["error", "always"]
+          echo 'module.exports = {
+            overrides: [
+              {
+                files: ["**/*.js"],
+                rules: {
+                  "quotes": ["error", "double"],
+                  "semi": ["error", "always"]
+                }
               }
-            }
-          ];' > eslint.config.js
-
+            ]
+          };' > eslint.config.js
       # Make sure the eslint.config.js file is checked
       - name: Verify eslint config exists
         run: |
