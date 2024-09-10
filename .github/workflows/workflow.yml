@@ -31,6 +31,11 @@ jobs:
             "extends": "stylelint-config-standard"
           }' > .stylelintrc.json
 
+      # Make sure the .stylelintrc.json file is checked
+      - name: Verify stylelint config exists
+        run: |
+          cat .stylelintrc.json
+          
       # Run HTML linting
       - name: Lint HTML files
         run: |
@@ -39,7 +44,7 @@ jobs:
       # Run CSS linting
       - name: Lint CSS files
         run: |
-          stylelint "**/*.css"
+          stylelint "**/*.css" --config .stylelintrc.json
 
       # Run JavaScript linting
       - name: Lint JavaScript files
