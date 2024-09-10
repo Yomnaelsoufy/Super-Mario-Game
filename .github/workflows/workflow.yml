@@ -22,17 +22,17 @@ jobs:
       # Install the necessary linters
       - name: Install linters (htmlhint, stylelint, eslint)
         run: |
-          npm install -g htmlhint stylelint eslint
+          npm install -g htmlhint stylelint eslint stylelint-config-standard
 
       # Run HTML linting
       - name: Lint HTML files
         run: |
           htmlhint "**/*.html"
 
-      # Run CSS linting
+      # Run CSS linting with a preset
       - name: Lint CSS files
         run: |
-          stylelint "**/*.css"
+          stylelint "**/*.css" --config stylelint-config-standard
 
       # Run JavaScript linting
       - name: Lint JavaScript files
