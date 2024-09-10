@@ -35,7 +35,25 @@ jobs:
       - name: Verify stylelint config exists
         run: |
           cat .stylelintrc.json
-          
+
+      # Create eslint config file for ESLint v9
+      - name: Create eslint config
+        run: |
+          echo 'export default [
+            {
+              files: ["**/*.js"],
+              rules: {
+                "quotes": ["error", "double"],
+                "semi": ["error", "always"]
+              }
+            }
+          ];' > eslint.config.js
+
+      # Make sure the eslint.config.js file is checked
+      - name: Verify eslint config exists
+        run: |
+          cat eslint.config.js
+
       # Run HTML linting
       - name: Lint HTML files
         run: |
@@ -46,10 +64,10 @@ jobs:
         run: |
           stylelint "**/*.css" --config .stylelintrc.json
 
-      # Run JavaScript linting
+      # Run JavaScript linting using the new config file
       - name: Lint JavaScript files
         run: |
-          eslint "**/*.js"
+          eslint "**/*.js" --config eslint.config.js
 
       # Optional: Fail the workflow if any linting errors are found
       - name: Check for linting errors
