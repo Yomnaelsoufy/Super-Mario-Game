@@ -19,20 +19,27 @@ jobs:
         with:
           node-version: '18' # Specify the Node.js version you need
 
-      # Install the necessary linters
-      - name: Install linters (htmlhint, stylelint, eslint)
+      # Install the necessary linters and stylelint-config-standard
+      - name: Install linters (htmlhint, stylelint, eslint, stylelint-config-standard)
         run: |
           npm install -g htmlhint stylelint eslint stylelint-config-standard
+
+      # Create stylelint config file
+      - name: Create stylelint config
+        run: |
+          echo '{
+            "extends": "stylelint-config-standard"
+          }' > .stylelintrc.json
 
       # Run HTML linting
       - name: Lint HTML files
         run: |
           htmlhint "**/*.html"
 
-      # Run CSS linting with a preset
+      # Run CSS linting
       - name: Lint CSS files
         run: |
-          stylelint "**/*.css" --config stylelint-config-standard
+          stylelint "**/*.css"
 
       # Run JavaScript linting
       - name: Lint JavaScript files
