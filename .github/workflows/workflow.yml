@@ -13,16 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install Node.js (required for running linters)
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Install the necessary linters
-      - name: Install linters (htmlhint, stylelint, eslint, stylelint-config-standard)
+      # Install dependencies
+      - name: Install dependencies
         run: |
-          npm install -g htmlhint stylelint eslint stylelint-config-standard
+          npm install
 
       # Create stylelint config file
       - name: Create stylelint config
@@ -31,46 +31,44 @@ jobs:
             "extends": "stylelint-config-standard"
           }' > .stylelintrc.json
 
-      # Make sure the .stylelintrc.json file is checked
-      - name: Verify stylelint config exists
+      # Verify stylelint config exists
+      - name: Verify stylelint config
         run: |
           cat .stylelintrc.json
 
-      # Create eslint config file for ESLint v9
+      # Create eslint config file for ESLint v9 in CommonJS format
       - name: Create eslint config
         run: |
           echo 'module.exports = {
-            overrides: [
-              {
-                files: ["**/*.js"],
-                rules: {
-                  "quotes": ["error", "double"],
-                  "semi": ["error", "always"]
-                }
-              }
-            ]
+            root: true,
+            files: ["**/*.js"],
+            rules: {
+              "quotes": ["error", "double"],
+              "semi": ["error", "always"]
+            }
           };' > eslint.config.js
-      # Make sure the eslint.config.js file is checked
-      - name: Verify eslint config exists
+
+      # Verify eslint config exists
+      - name: Verify eslint config
         run: |
           cat eslint.config.js
 
       # Run HTML linting
       - name: Lint HTML files
         run: |
-          htmlhint "**/*.html"
+          npx htmlhint "**/*.html"
 
       # Run CSS linting
       - name: Lint CSS files
         run: |
-          stylelint "**/*.css" --config .stylelintrc.json
+          npx stylelint "**/*.css" --config .stylelintrc.json
 
-      # Run JavaScript linting using the new config file
+      # Run JavaScript linting
       - name: Lint JavaScript files
         run: |
-          eslint "**/*.js" --config eslint.config.js
+          npx eslint "**/*.js" --config eslint.config.js
 
       # Optional: Fail the workflow if any linting errors are found
       - name: Check for linting errors
-        if: failure() # Ensures that if any linting step fails, the build fails
+        if: failure()
         run: echo "Linting errors found!"
